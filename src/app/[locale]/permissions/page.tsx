@@ -43,7 +43,7 @@ export default function PermissionsPage() {
         isMappingComplete,
         progress,
         error,
-        refreshFiles,
+        remapFiles,
         updateFilePermissions,
     } = useDriveFiles();
 
@@ -184,8 +184,8 @@ export default function PermissionsPage() {
                 throw new Error("Failed to perform bulk action");
             }
 
-            // Refresh files to get updated permissions
-            await refreshFiles();
+            // Remap files to get updated files and permissions
+            await remapFiles();
             setBulkDialogOpen(false);
         } catch (error) {
             console.error("Error in bulk action:", error);
@@ -307,12 +307,12 @@ export default function PermissionsPage() {
                             <div className="flex flex-wrap items-center gap-4 mb-4">
                                 <div className="flex items-center gap-3">
                                     <Button
-                                        onClick={refreshFiles}
+                                        onClick={remapFiles}
                                         variant="outline"
                                         disabled={isLoading}
                                     >
                                         <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-                                        {t("common.refresh")}
+                                        {t("common.remap")}
                                     </Button>
                                     {isLoading && (
                                         <div className="flex items-center gap-2">
@@ -410,7 +410,7 @@ export default function PermissionsPage() {
                     open={errorDialogOpen}
                     onOpenChange={setErrorDialogOpen}
                     error={error || t("permissions.errors.unknown")}
-                    onRetry={refreshFiles}
+                    onRetry={remapFiles}
                 />
             </div>
         </AuthGuard>

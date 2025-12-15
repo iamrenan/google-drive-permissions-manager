@@ -17,7 +17,7 @@ interface UseDriveFilesResult {
     isMappingComplete: boolean;
     progress: { current: number; total: number };
     error: string | null;
-    refreshFiles: () => Promise<void>;
+    remapFiles: () => Promise<void>;
     updateFilePermissions: (fileId: string, permissions: DrivePermission[]) => void;
 }
 
@@ -164,7 +164,7 @@ export function useDriveFiles(): UseDriveFilesResult {
         isMappingComplete,
         progress,
         error,
-        refreshFiles: fetchAllFiles,
+        remapFiles: fetchAllFiles,
         updateFilePermissions,
     };
 }

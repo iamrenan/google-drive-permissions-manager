@@ -139,7 +139,7 @@ export function DataTable<TData, TValue>({
                                 ?.setFilterValue(value === "all" ? undefined : value)
                         }
                     >
-                        <SelectTrigger className="w-[130px]">
+                        <SelectTrigger className="min-w-[130px] w-auto [&>svg]:ml-2">
                             <SelectValue placeholder={t("filters.type")} />
                         </SelectTrigger>
                         <SelectContent>
@@ -158,7 +158,7 @@ export function DataTable<TData, TValue>({
                                 ?.setFilterValue(value === "all" ? undefined : value)
                         }
                     >
-                        <SelectTrigger className="w-[130px]">
+                        <SelectTrigger className="min-w-[130px] w-auto [&>svg]:ml-2">
                             <SelectValue placeholder={t("filters.sharing")} />
                         </SelectTrigger>
                         <SelectContent>
