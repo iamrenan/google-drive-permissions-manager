@@ -61,6 +61,7 @@ export interface MappedFile {
     modifiedTime?: string;
     size?: string;
     owner?: string;
+    subRows?: MappedFile[];
 }
 
 export interface FileMapping {

@@ -17,6 +17,7 @@ import {
 } from "@/components/permissions/dialogs";
 import { Button } from "@/components/ui/button";
 import { MappedFile, DrivePermission } from "@/lib/types";
+import { buildFileTree } from "@/lib/utils";
 import {
     RefreshCw,
     UserPlus,
@@ -198,13 +199,22 @@ export default function PermissionsPage() {
         [handleAddPermission, handleRemovePermission, handleViewPermissions]
     );
 
+    // Build hierarchical tree structure
+    const fileTree = useMemo(() => buildFileTree(files), [files]);
+
+    // Count all files recursively for stats
+    const flattenFiles = useCallback((files: MappedFile[]): MappedFile[] => {
+        return files.flatMap(file => [file, ...flattenFiles(file.subRows || [])]);
+    }, []);
+
     // Stats
     const stats = useMemo(() => {
-        const totalFiles = files.length;
-        const folders = files.filter((f) => f.isFolder).length;
-        const sharedFiles = files.filter((f) => f.shared).length;
+        const allFiles = flattenFiles(fileTree);
+        const totalFiles = allFiles.length;
+        const folders = allFiles.filter((f) => f.isFolder).length;
+        const sharedFiles = allFiles.filter((f) => f.shared).length;
         const uniqueUsers = new Set(
-            files.flatMap((f) =>
+            allFiles.flatMap((f) =>
                 f.permissions
                     .filter((p) => p.emailAddress)
                     .map((p) => p.emailAddress)
@@ -212,7 +222,7 @@ export default function PermissionsPage() {
         ).size;
 
         return { totalFiles, folders, sharedFiles, uniqueUsers };
-    }, [files]);
+    }, [fileTree, flattenFiles]);
 
     // Auth check
     if (status === "loading") {
@@ -330,7 +340,7 @@ export default function PermissionsPage() {
                         progress={progress}
                     />
                 ) : (
-                    <DataTable columns={columns} data={files} />
+                    <DataTable columns={columns} data={fileTree} />
                 )}
 
                 {/* Dialogs */}

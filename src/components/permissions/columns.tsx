@@ -29,6 +29,8 @@ import {
     UserMinus,
     Users,
     Eye,
+    ChevronDown,
+    ChevronRight,
 } from "lucide-react";
 import { formatDate, formatBytes } from "@/lib/utils";
 
@@ -81,8 +83,26 @@ export function getColumns({
             },
             cell: ({ row }) => {
                 const file = row.original;
+                const canExpand = row.getCanExpand();
+                const isExpanded = row.getIsExpanded();
+                const depth = row.depth;
+                
                 return (
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" style={{ paddingLeft: `${depth * 1.5}rem` }}>
+                        {canExpand ? (
+                            <button
+                                onClick={row.getToggleExpandedHandler()}
+                                className="p-0 hover:bg-muted rounded"
+                            >
+                                {isExpanded ? (
+                                    <ChevronDown className="h-4 w-4" />
+                                ) : (
+                                    <ChevronRight className="h-4 w-4" />
+                                )}
+                            </button>
+                        ) : (
+                            <span className="w-4" />
+                        )}
                         {file.isFolder ? (
                             <Folder className="h-4 w-4 text-blue-500" />
                         ) : (
@@ -90,9 +110,11 @@ export function getColumns({
                         )}
                         <div className="flex flex-col">
                             <span className="font-medium">{file.name}</span>
-                            <span className="text-xs text-muted-foreground truncate max-w-[300px]">
-                                {file.path}
-                            </span>
+                            {depth === 0 && (
+                                <span className="text-xs text-muted-foreground truncate max-w-[300px]">
+                                    {file.path}
+                                </span>
+                            )}
                         </div>
                     </div>
                 );

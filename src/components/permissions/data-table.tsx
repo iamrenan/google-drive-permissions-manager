@@ -5,6 +5,7 @@ import {
     ColumnFiltersState,
     SortingState,
     VisibilityState,
+    ExpandedState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
@@ -12,6 +13,7 @@ import {
     getFacetedUniqueValues,
     getPaginationRowModel,
     getSortedRowModel,
+    getExpandedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
 import {
@@ -55,21 +57,26 @@ export function DataTable<TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = useState({});
     const [globalFilter, setGlobalFilter] = useState("");
+    const [expanded, setExpanded] = useState<ExpandedState>({});
 
     const table = useReactTable({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getFacetedRowModel: getFacetedRowModel(),
         getFacetedUniqueValues: getFacetedUniqueValues(),
+        getSubRows: (row: any) => row.subRows,
+        paginateExpandedRows: false,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         onGlobalFilterChange: setGlobalFilter,
+        onExpandedChange: setExpanded,
         globalFilterFn: "includesString",
         state: {
             sorting,
@@ -77,6 +84,7 @@ export function DataTable<TData, TValue>({
             columnVisibility,
             rowSelection,
             globalFilter,
+            expanded,
         },
         initialState: {
             pagination: {
