@@ -13,6 +13,7 @@ import {
 interface UseDriveFilesResult {
     files: MappedFile[];
     isLoading: boolean;
+    isInitialized: boolean;
     isMappingComplete: boolean;
     progress: { current: number; total: number };
     error: string | null;
@@ -23,7 +24,8 @@ interface UseDriveFilesResult {
 export function useDriveFiles(): UseDriveFilesResult {
     const { data: session } = useSession();
     const [files, setFiles] = useState<MappedFile[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isInitialized, setIsInitialized] = useState(false);
     const [isMappingComplete, setIsMappingComplete] = useState(false);
     const [progress, setProgress] = useState({ current: 0, total: 0 });
     const [error, setError] = useState<string | null>(null);
@@ -139,7 +141,7 @@ export function useDriveFiles(): UseDriveFilesResult {
     useEffect(() => {
         async function init() {
             if (!session?.user?.email) {
-                setIsLoading(false);
+                setIsInitialized(true);
                 return;
             }
 
@@ -147,9 +149,9 @@ export function useDriveFiles(): UseDriveFilesResult {
 
             if (!hasCached) {
                 await fetchAllFiles();
-            } else {
-                setIsLoading(false);
             }
+
+            setIsInitialized(true);
         }
 
         init();
@@ -158,6 +160,7 @@ export function useDriveFiles(): UseDriveFilesResult {
     return {
         files,
         isLoading,
+        isInitialized,
         isMappingComplete,
         progress,
         error,

@@ -17,6 +17,7 @@ import {
     BulkActionDialog,
 } from "@/components/permissions/dialogs";
 import { Button } from "@/components/ui/button";
+import { FadeIn } from "@/components/ui/fade-in";
 import { MappedFile, DrivePermission } from "@/lib/types";
 import { buildFileTree } from "@/lib/utils";
 import {
@@ -38,6 +39,7 @@ export default function PermissionsPage() {
     const {
         files,
         isLoading,
+        isInitialized,
         isMappingComplete,
         progress,
         error,
@@ -255,99 +257,126 @@ export default function PermissionsPage() {
                 </div>
 
                 {/* Stats */}
-                {isMappingComplete && files.length > 0 && (
-                    <div className="grid gap-4 md:grid-cols-4 mb-8">
-                        <div className="rounded-lg border bg-card p-4">
-                            <div className="flex items-center gap-2">
-                                <HardDrive className="h-5 w-5 text-primary" />
-                                <span className="text-sm text-muted-foreground">{t("permissions.stats.totalFiles")}</span>
+                {isInitialized && isMappingComplete && files.length > 0 && (
+                    <FadeIn duration={400} delay={100}>
+                        <div className="grid gap-4 md:grid-cols-4 mb-8">
+                            <div className="rounded-lg border bg-card p-4">
+                                <div className="flex items-center gap-2">
+                                    <HardDrive className="h-5 w-5 text-primary" />
+                                    <span className="text-sm text-muted-foreground">{t("permissions.stats.totalFiles")}</span>
+                                </div>
+                                <p className="text-2xl font-bold mt-2">
+                                    {format.number(stats.totalFiles)}
+                                </p>
                             </div>
-                            <p className="text-2xl font-bold mt-2">
-                                {format.number(stats.totalFiles)}
-                            </p>
-                        </div>
-                        <div className="rounded-lg border bg-card p-4">
-                            <div className="flex items-center gap-2">
-                                <FolderTree className="h-5 w-5 text-blue-500" />
-                                <span className="text-sm text-muted-foreground">{t("permissions.stats.folders")}</span>
+                            <div className="rounded-lg border bg-card p-4">
+                                <div className="flex items-center gap-2">
+                                    <FolderTree className="h-5 w-5 text-blue-500" />
+                                    <span className="text-sm text-muted-foreground">{t("permissions.stats.folders")}</span>
+                                </div>
+                                <p className="text-2xl font-bold mt-2">
+                                    {format.number(stats.folders)}
+                                </p>
                             </div>
-                            <p className="text-2xl font-bold mt-2">
-                                {format.number(stats.folders)}
-                            </p>
-                        </div>
-                        <div className="rounded-lg border bg-card p-4">
-                            <div className="flex items-center gap-2">
-                                <FileText className="h-5 w-5 text-green-500" />
-                                <span className="text-sm text-muted-foreground">{t("permissions.stats.sharedFiles")}</span>
+                            <div className="rounded-lg border bg-card p-4">
+                                <div className="flex items-center gap-2">
+                                    <FileText className="h-5 w-5 text-green-500" />
+                                    <span className="text-sm text-muted-foreground">{t("permissions.stats.sharedFiles")}</span>
+                                </div>
+                                <p className="text-2xl font-bold mt-2">
+                                    {format.number(stats.sharedFiles)}
+                                </p>
                             </div>
-                            <p className="text-2xl font-bold mt-2">
-                                {format.number(stats.sharedFiles)}
-                            </p>
-                        </div>
-                        <div className="rounded-lg border bg-card p-4">
-                            <div className="flex items-center gap-2">
-                                <Users className="h-5 w-5 text-purple-500" />
-                                <span className="text-sm text-muted-foreground">{t("permissions.stats.privateFiles")}</span>
+                            <div className="rounded-lg border bg-card p-4">
+                                <div className="flex items-center gap-2">
+                                    <Users className="h-5 w-5 text-purple-500" />
+                                    <span className="text-sm text-muted-foreground">{t("permissions.stats.privateFiles")}</span>
+                                </div>
+                                <p className="text-2xl font-bold mt-2">
+                                    {format.number(stats.uniqueUsers)}
+                                </p>
                             </div>
-                            <p className="text-2xl font-bold mt-2">
-                                {format.number(stats.uniqueUsers)}
-                            </p>
                         </div>
-                    </div>
+                    </FadeIn>
                 )}
 
                 {/* Actions bar */}
-                {files.length > 0 && (
-                    <div className="mb-6">
-                        <div className="flex flex-wrap items-center gap-4 mb-4">
-                            <div className="flex items-center gap-3">
-                                <Button
-                                    onClick={refreshFiles}
-                                    variant="outline"
-                                    disabled={isLoading}
-                                >
-                                    <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-                                    {t("common.refresh")}
-                                </Button>
-                                {isLoading && (
-                                    <div className="flex items-center gap-2">
-                                        <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                                        <div>
-                                            <p className="text-sm font-medium">{t("permissions.loading.title")}</p>
-                                            <p className="text-xs text-muted-foreground">
-                                                {t("permissions.loading.filesMapped", { count: progress.current })}
-                                            </p>
+                {isInitialized && files.length > 0 && (
+                    <FadeIn duration={400} delay={50}>
+                        <div className="mb-6">
+                            <div className="flex flex-wrap items-center gap-4 mb-4">
+                                <div className="flex items-center gap-3">
+                                    <Button
+                                        onClick={refreshFiles}
+                                        variant="outline"
+                                        disabled={isLoading}
+                                    >
+                                        <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                                        {t("common.refresh")}
+                                    </Button>
+                                    {isLoading && (
+                                        <div className="flex items-center gap-2">
+                                            <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                                            <div>
+                                                <p className="text-sm font-medium">{t("permissions.loading.title")}</p>
+                                                <p className="text-xs text-muted-foreground">
+                                                    {t("permissions.loading.filesMapped", { count: progress.current })}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    )}
+                                </div>
+                                <div className="flex-1" />
+                                {isMappingComplete && (
+                                    <>
+                                        <Button onClick={handleBulkAdd} variant="outline">
+                                            <UserPlus className="mr-2 h-4 w-4" />
+                                            {t("permissions.actions.bulkAdd")}
+                                        </Button>
+                                        <Button onClick={handleBulkRemove} variant="outline">
+                                            <UserMinus className="mr-2 h-4 w-4" />
+                                            {t("permissions.actions.bulkRemove")}
+                                        </Button>
+                                    </>
                                 )}
                             </div>
-                            <div className="flex-1" />
-                            {isMappingComplete && (
-                                <>
-                                    <Button onClick={handleBulkAdd} variant="outline">
-                                        <UserPlus className="mr-2 h-4 w-4" />
-                                        {t("permissions.actions.bulkAdd")}
-                                    </Button>
-                                    <Button onClick={handleBulkRemove} variant="outline">
-                                        <UserMinus className="mr-2 h-4 w-4" />
-                                        {t("permissions.actions.bulkRemove")}
-                                    </Button>
-                                </>
-                            )}
                         </div>
-                    </div>
+                    </FadeIn>
                 )}
 
                 {/* Content */}
-                {files.length === 0 ? (
-                    <EmptyState
-                        isLoading={isLoading}
-                        hasFiles={false}
-                        progress={progress}
-                    />
-                ) : (
-                    <DataTable columns={columns} data={fileTree} />
-                )}
+                <div className="min-h-[400px]">
+                    {!isInitialized ? (
+                        // Initial loading skeleton - shown before we know if there are files
+                        <FadeIn key="loading" className="flex flex-col items-center justify-center py-20">
+                            <Loader2 className="h-12 w-12 animate-spin text-primary mb-4" />
+                            <p className="text-muted-foreground">{t("common.loading")}</p>
+                        </FadeIn>
+                    ) : isLoading && files.length === 0 ? (
+                        // Mapping in progress - no cached files
+                        <FadeIn key="mapping">
+                            <EmptyState
+                                isLoading={true}
+                                hasFiles={false}
+                                progress={progress}
+                            />
+                        </FadeIn>
+                    ) : files.length === 0 && isMappingComplete ? (
+                        // Truly empty - mapping complete but no files
+                        <FadeIn key="empty">
+                            <EmptyState
+                                isLoading={false}
+                                hasFiles={false}
+                                progress={progress}
+                            />
+                        </FadeIn>
+                    ) : files.length > 0 ? (
+                        // Has files - show table (may still be loading more in background)
+                        <FadeIn key="table" duration={400}>
+                            <DataTable columns={columns} data={fileTree} />
+                        </FadeIn>
+                    ) : null}
+                </div>
 
                 {/* Dialogs */}
                 <AddPermissionDialog
