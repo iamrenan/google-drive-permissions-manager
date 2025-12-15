@@ -2,6 +2,7 @@
 
 import { SessionProvider } from "next-auth/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 import { ReactNode } from "react";
 
 interface ProvidersProps {
@@ -10,8 +11,10 @@ interface ProvidersProps {
 
 export function Providers({ children }: ProvidersProps) {
     return (
-        <SessionProvider>
-            <TooltipProvider>{children}</TooltipProvider>
-        </SessionProvider>
+        <ThemeProvider>
+            <SessionProvider>
+                <TooltipProvider>{children}</TooltipProvider>
+            </SessionProvider>
+        </ThemeProvider>
     );
 }

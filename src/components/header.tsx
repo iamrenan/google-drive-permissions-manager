@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { HardDrive, LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function Header() {
     const { data: session, status } = useSession();
@@ -25,7 +26,8 @@ export function Header() {
                     <span className="font-bold text-lg">Drive Permissions Manager</span>
                 </Link>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                    <ThemeToggle />
                     {status === "loading" ? (
                         <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
                     ) : session?.user ? (
