@@ -41,6 +41,7 @@ import {
     Search,
 } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { FacetedFilter } from "./faceted-filter";
 
 interface DataTableProps<TData, TValue> {
@@ -52,6 +53,7 @@ export function DataTable<TData, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
+    const t = useTranslations("dataTable");
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -101,7 +103,7 @@ export function DataTable<TData, TValue>({
                     <div className="relative flex-1 max-w-sm">
                         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                         <Input
-                            placeholder="Search files..."
+                            placeholder={t("filters.searchPlaceholder")}
                             value={globalFilter ?? ""}
                             onChange={(event) => setGlobalFilter(event.target.value)}
                             className="pl-9"
@@ -110,7 +112,7 @@ export function DataTable<TData, TValue>({
                     {table.getColumn("userPermissions") && (
                         <FacetedFilter
                             column={table.getColumn("userPermissions")}
-                            title="Users"
+                            title={t("filters.users")}
                             options={Array.from(
                                 new Set(
                                     data.flatMap((file: any) =>
@@ -138,12 +140,12 @@ export function DataTable<TData, TValue>({
                         }
                     >
                         <SelectTrigger className="w-[130px]">
-                            <SelectValue placeholder="Type" />
+                            <SelectValue placeholder={t("filters.type")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Types</SelectItem>
-                            <SelectItem value="folder">Folders</SelectItem>
-                            <SelectItem value="file">Files</SelectItem>
+                            <SelectItem value="all">{t("filters.allTypes")}</SelectItem>
+                            <SelectItem value="folder">{t("filters.folders")}</SelectItem>
+                            <SelectItem value="file">{t("filters.files")}</SelectItem>
                         </SelectContent>
                     </Select>
                     <Select
@@ -157,12 +159,12 @@ export function DataTable<TData, TValue>({
                         }
                     >
                         <SelectTrigger className="w-[130px]">
-                            <SelectValue placeholder="Sharing" />
+                            <SelectValue placeholder={t("filters.sharing")} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Files</SelectItem>
-                            <SelectItem value="shared">Shared</SelectItem>
-                            <SelectItem value="private">Private</SelectItem>
+                            <SelectItem value="all">{t("filters.allFiles")}</SelectItem>
+                            <SelectItem value="shared">{t("filters.shared")}</SelectItem>
+                            <SelectItem value="private">{t("filters.private")}</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
@@ -171,8 +173,10 @@ export function DataTable<TData, TValue>({
             {/* Selection info */}
             {table.getFilteredSelectedRowModel().rows.length > 0 && (
                 <div className="rounded-md bg-muted px-4 py-2 text-sm">
-                    {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} file(s) selected.
+                    {t("selection.filesSelected", {
+                        selected: table.getFilteredSelectedRowModel().rows.length,
+                        total: table.getFilteredRowModel().rows.length,
+                    })}
                 </div>
             )}
 
@@ -220,7 +224,7 @@ export function DataTable<TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    {t("empty")}
                                 </TableCell>
                             </TableRow>
                         )}
@@ -231,12 +235,14 @@ export function DataTable<TData, TValue>({
             {/* Pagination */}
             <div className="flex items-center justify-between">
                 <div className="text-sm text-muted-foreground">
-                    Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
-                    {Math.min(
-                        (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-                        table.getFilteredRowModel().rows.length
-                    )}{" "}
-                    of {table.getFilteredRowModel().rows.length} entries
+                    {t("pagination.showing", {
+                        start: table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1,
+                        end: Math.min(
+                            (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
+                            table.getFilteredRowModel().rows.length
+                        ),
+                        total: table.getFilteredRowModel().rows.length,
+                    })}
                 </div>
                 <div className="flex items-center gap-2">
                     <Button
@@ -256,8 +262,10 @@ export function DataTable<TData, TValue>({
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
                     <span className="text-sm">
-                        Page {table.getState().pagination.pageIndex + 1} of{" "}
-                        {table.getPageCount()}
+                        {t("pagination.page", {
+                            current: table.getState().pagination.pageIndex + 1,
+                            total: table.getPageCount(),
+                        })}
                     </span>
                     <Button
                         variant="outline"

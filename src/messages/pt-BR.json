@@ -1,0 +1,295 @@
+{
+    "metadata": {
+        "title": "Gerenciador de Permissões do Google Drive",
+        "description": "Gerencie e controle permissões para seus arquivos e pastas do Google Drive com facilidade."
+    },
+    "common": {
+        "brand": "Gerenciador de Permissões Drive",
+        "signIn": "Entrar com Google",
+        "signOut": "Sair",
+        "cancel": "Cancelar",
+        "loading": "Carregando...",
+        "error": "Erro",
+        "success": "Sucesso",
+        "confirm": "Confirmar",
+        "close": "Fechar",
+        "save": "Salvar",
+        "delete": "Excluir",
+        "edit": "Editar",
+        "add": "Adicionar",
+        "remove": "Remover",
+        "search": "Buscar",
+        "filter": "Filtrar",
+        "clear": "Limpar",
+        "refresh": "Atualizar",
+        "retry": "Tentar Novamente",
+        "home": "Início",
+        "myDrive": "Meu Drive",
+        "openMenu": "Abrir menu"
+    },
+    "roles": {
+        "owner": "Proprietário",
+        "organizer": "Organizador",
+        "fileOrganizer": "Organizador de Arquivos",
+        "writer": "Editor",
+        "commenter": "Comentarista",
+        "reader": "Visualizador"
+    },
+    "permissionTypes": {
+        "user": "Usuário",
+        "group": "Grupo",
+        "domain": "Domínio",
+        "anyone": "Qualquer pessoa"
+    },
+    "fileTypes": {
+        "folder": "Pasta",
+        "file": "Arquivo"
+    },
+    "home": {
+        "hero": {
+            "title1": "Assuma o Controle das",
+            "title2": "Permissões do",
+            "title3": "Google Drive",
+            "description": "Visualize, gerencie e audite permissões de arquivos em todo o seu Google Drive. Mantenha seus dados seguros e organizados com nossa poderosa ferramenta de gerenciamento de permissões.",
+            "goToDashboard": "Ir para Painel",
+            "connectDrive": "Conectar Google Drive",
+            "learnMore": "Saiba Mais",
+            "tagline": "Grátis • Sem cartão de crédito • Focado em privacidade"
+        },
+        "screenshot": {
+            "alt": "Painel do Gerenciador de Permissões Drive"
+        },
+        "features": {
+            "heading": "Tudo que Você Precisa para Gerenciar Permissões",
+            "completeMapping": {
+                "title": "Mapeamento Completo de Arquivos",
+                "description": "Escaneie e mapeie automaticamente toda a estrutura do seu Google Drive, incluindo todos os arquivos, pastas e suas permissões associadas."
+            },
+            "permissionControl": {
+                "title": "Controle de Permissões",
+                "description": "Adicione ou remova acesso para usuários, grupos ou domínios específicos. Defina funções de visualizador, comentarista ou editor com apenas alguns cliques."
+            },
+            "searchFilter": {
+                "title": "Busca e Filtro Avançados",
+                "description": "Encontre arquivos rapidamente por nome, tipo ou status de permissão. Filtre por arquivos compartilhados, privados ou níveis específicos de permissão."
+            },
+            "bulkActions": {
+                "title": "Ações em Massa",
+                "description": "Selecione múltiplos arquivos e aplique alterações de permissão em massa. Economize tempo gerenciando permissões para pastas inteiras de uma vez."
+            },
+            "privacy": {
+                "title": "Privacidade em Primeiro Lugar",
+                "description": "Seus dados ficam com você. Não armazenamos seus arquivos - todas as operações acontecem através de autenticação OAuth segura com o Google."
+            },
+            "realtime": {
+                "title": "Atualizações em Tempo Real",
+                "description": "Veja alterações de permissão instantaneamente. Nosso sistema rastreia todas as modificações e fornece feedback em tempo real."
+            }
+        },
+        "benefits": {
+            "heading": "Por que Usar o Gerenciador de Permissões Drive?",
+            "items": {
+                "visualize": "Visualize todos os arquivos e suas permissões em um só lugar",
+                "identify": "Identifique quem tem acesso a documentos sensíveis",
+                "removeAccess": "Remova permissões de ex-membros da equipe rapidamente",
+                "audit": "Audite links compartilhados e arquivos públicos",
+                "bulkModify": "Modifique permissões em massa em múltiplos arquivos"
+            }
+        },
+        "setup": {
+            "heading": "Configuração Necessária",
+            "description": "Para usar este aplicativo, você precisa configurar credenciais OAuth do Google.",
+            "followSteps": "Siga estas etapas:",
+            "step1": "1. Acesse o Google Cloud Console",
+            "step2": "2. Crie um novo projeto ou selecione um existente",
+            "step3": "3. Ative a API do Google Drive",
+            "step4": "4. Configure a tela de consentimento OAuth",
+            "step5": "5. Crie credenciais OAuth 2.0 (Aplicativo Web)",
+            "step6": "6. Adicione http://localhost:3000 às origens autorizadas",
+            "step7": "7. Adicione http://localhost:3000/api/auth/callback/google aos URIs de redirecionamento autorizados",
+            "envNote": "Em seguida, crie um arquivo .env.local com suas credenciais. Consulte o README para detalhes."
+        },
+        "cta": {
+            "heading": "Pronto para Assumir o Controle?",
+            "description": "Conecte seu Google Drive e comece a gerenciar permissões em segundos. Sem necessidade de instalação.",
+            "button": "Começar Agora"
+        }
+    },
+    "permissions": {
+        "pageTitle": "Gerenciador de Permissões",
+        "pageDescription": "Gerencie permissões para seus arquivos e pastas do Google Drive",
+        "stats": {
+            "totalFiles": "Total de Arquivos",
+            "folders": "Pastas",
+            "sharedFiles": "Arquivos Compartilhados",
+            "privateFiles": "Arquivos Privados"
+        },
+        "loading": {
+            "title": "Mapeando Seu Drive",
+            "filesMapped": "{count} arquivos mapeados",
+            "initializing": "Inicializando..."
+        },
+        "actions": {
+            "bulkAdd": "Adicionar Permissão em Massa",
+            "bulkRemove": "Remover Permissão em Massa"
+        },
+        "errors": {
+            "failedToLoad": "Falha ao carregar arquivos do Google Drive",
+            "couldNotMap": "Não foi possível mapear seus arquivos do Google Drive",
+            "tryAgain": "Por favor, tente novamente ou verifique sua conexão",
+            "unknown": "Ocorreu um erro desconhecido"
+        }
+    },
+    "dialogs": {
+        "addPermission": {
+            "title": "Adicionar Permissão",
+            "description": "Adicione uma nova permissão a este arquivo ou pasta.",
+            "bulkTitle": "Adicionar Permissão em Massa",
+            "bulkDescription": "Isso adicionará permissões para {count} arquivo(s) selecionado(s).",
+            "permissionType": "Tipo de Permissão",
+            "emailAddress": "Endereço de E-mail",
+            "emailPlaceholder": "usuario@exemplo.com",
+            "domain": "Domínio",
+            "domainPlaceholder": "exemplo.com",
+            "role": "Função",
+            "submit": "Adicionar Permissão",
+            "bulkSubmit": "Adicionar aos Selecionados"
+        },
+        "removePermission": {
+            "title": "Remover Permissão",
+            "description": "Selecione uma permissão para remover deste arquivo ou pasta.",
+            "bulkTitle": "Remover Permissão em Massa",
+            "bulkDescription": "Isso removerá permissões para {count} arquivo(s) selecionado(s).",
+            "selectEmail": "Endereço de E-mail",
+            "selectPlaceholder": "Selecione o e-mail para remover...",
+            "noPermissions": "Nenhuma permissão encontrada.",
+            "submit": "Remover Permissão",
+            "bulkSubmit": "Remover dos Selecionados"
+        },
+        "viewPermissions": {
+            "title": "Permissões",
+            "description": "Visualize todas as permissões deste arquivo ou pasta.",
+            "noPermissions": "Nenhuma permissão encontrada."
+        }
+    },
+    "dataTable": {
+        "roles": {
+            "owner": "Proprietário",
+            "organizer": "Organizador",
+            "fileOrganizer": "Organizador de Arquivos",
+            "writer": "Editor",
+            "commenter": "Comentarista",
+            "reader": "Visualizador"
+        },
+        "columns": {
+            "name": "Nome",
+            "type": "Tipo",
+            "permissionedUsers": "Usuários com Permissão",
+            "shared": "Compartilhado",
+            "modified": "Modificado",
+            "actions": "Ações",
+            "selectAll": "Selecionar todos",
+            "selectRow": "Selecionar linha",
+            "folder": "Pasta",
+            "file": "Arquivo",
+            "noSharedAccess": "Sem acesso compartilhado",
+            "anyone": "Qualquer pessoa",
+            "unknown": "Desconhecido",
+            "more": "+{count} mais",
+            "sharedBadge": "Compartilhado",
+            "privateBadge": "Privado",
+            "expand": "Expandir",
+            "collapse": "Recolher",
+            "openMenu": "Abrir menu",
+            "actionsLabel": "Ações",
+            "viewPermissions": "Ver Permissões",
+            "addPermission": "Adicionar Permissão",
+            "removePermission": "Remover Permissão",
+            "openInDrive": "Abrir no Drive"
+        },
+        "filters": {
+            "searchPlaceholder": "Buscar arquivos...",
+            "allTypes": "Todos os Tipos",
+            "folders": "Pastas",
+            "files": "Arquivos",
+            "allFiles": "Todos os Arquivos",
+            "shared": "Compartilhados",
+            "private": "Privados",
+            "type": "Tipo",
+            "sharing": "Compartilhamento",
+            "users": "Usuários",
+            "clearFilters": "Limpar filtros",
+            "noResults": "Nenhum resultado encontrado.",
+            "selected": "{count} selecionados"
+        },
+        "badges": {
+            "shared": "Compartilhado",
+            "private": "Privado",
+            "noAccess": "Sem acesso compartilhado",
+            "moreUsers": "+{count} mais"
+        },
+        "pagination": {
+            "showing": "Exibindo {start} a {end} de {total} entradas",
+            "page": "Página {current} de {total}"
+        },
+        "selection": {
+            "filesSelected": "{selected} de {total} arquivo(s) selecionado(s)."
+        },
+        "empty": "Sem resultados.",
+        "actions": {
+            "viewPermissions": "Ver Permissões",
+            "addPermission": "Adicionar Permissão",
+            "removePermission": "Remover Permissão",
+            "openInDrive": "Abrir no Drive"
+        },
+        "accessibility": {
+            "expandRow": "Expandir linha",
+            "collapseRow": "Recolher linha"
+        }
+    },
+    "emptyState": {
+        "loading": {
+            "title": "Mapeando Seu Drive",
+            "description": "Estamos escaneando seu Google Drive e construindo um mapa de seus arquivos e pastas. Isso pode levar um momento dependendo de quantos arquivos você tem.",
+            "filesMapped": "{count} arquivos mapeados"
+        },
+        "noFiles": {
+            "title": "Nenhum Arquivo Encontrado",
+            "description": "Seu Google Drive parece estar vazio ou não conseguimos encontrar nenhum arquivo. Tente fazer upload de alguns arquivos no seu Drive e atualize a página."
+        }
+    },
+    "errorDialog": {
+        "title": "Falha no Mapeamento",
+        "description": "Não foi possível mapear seus arquivos do Google Drive.",
+        "details": "Isso pode ser devido a problemas de rede, autenticação ou limites de taxa da API."
+    },
+    "footer": {
+        "copyright": "© Renan A / Aireworks, {year}. Todos os direitos reservados.",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+    },
+    "theme": {
+        "toggle": "Alternar tema",
+        "light": "Claro",
+        "dark": "Escuro",
+        "system": "Sistema"
+    },
+    "language": {
+        "switch": "Mudar idioma",
+        "en-US": "English",
+        "pt-BR": "Português"
+    },
+    "errors": {
+        "unauthorized": "Não autorizado",
+        "invalidFileId": "ID de arquivo inválido",
+        "invalidEmail": "Endereço de e-mail inválido",
+        "typeRequired": "Tipo e função são obrigatórios",
+        "emailRequired": "Endereço de e-mail é obrigatório para permissões de usuário ou grupo",
+        "domainRequired": "Domínio é obrigatório para permissões de domínio",
+        "fileIdsRequired": "IDs de arquivo são obrigatórios",
+        "permissionNotFound": "Permissão não encontrada",
+        "failedToAdd": "Falha ao adicionar permissão",
+        "failedToRemove": "Falha ao remover permissão",
+        "generic": "Ocorreu um erro"
+    }
+}

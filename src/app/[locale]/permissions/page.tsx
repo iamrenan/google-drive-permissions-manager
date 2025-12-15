@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useState, useMemo, useCallback, useEffect } from "react";
+import { useTranslations, useLocale, useFormatter } from "next-intl";
 import { useDriveFiles } from "@/hooks/use-drive-files";
 import { AuthGuard } from "@/components/auth-guard";
 import { getColumns } from "@/components/permissions/columns";
@@ -31,6 +32,9 @@ import {
 
 export default function PermissionsPage() {
     const { data: session, status } = useSession();
+    const locale = useLocale();
+    const t = useTranslations();
+    const format = useFormatter();
     const {
         files,
         isLoading,
@@ -189,14 +193,16 @@ export default function PermissionsPage() {
     };
 
     // Create columns with handlers
+    const tDataTable = useTranslations("dataTable");
     const columns = useMemo(
         () =>
             getColumns({
                 onAddPermission: handleAddPermission,
                 onRemovePermission: handleRemovePermission,
                 onViewPermissions: handleViewPermissions,
+                t: tDataTable,
             }),
-        [handleAddPermission, handleRemovePermission, handleViewPermissions]
+        [handleAddPermission, handleRemovePermission, handleViewPermissions, tDataTable]
     );
 
     // Build hierarchical tree structure
@@ -234,7 +240,7 @@ export default function PermissionsPage() {
     }
 
     if (status === "unauthenticated") {
-        redirect("/");
+        redirect(`/${locale}`);
     }
 
     return (
@@ -242,9 +248,9 @@ export default function PermissionsPage() {
             <div className="container mx-auto py-8 px-4">
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold mb-2">Permissions Manager</h1>
+                    <h1 className="text-3xl font-bold mb-2">{t("permissions.pageTitle")}</h1>
                     <p className="text-muted-foreground">
-                        View and manage permissions for your Google Drive files and folders.
+                        {t("permissions.pageDescription")}
                     </p>
                 </div>
 
@@ -254,37 +260,37 @@ export default function PermissionsPage() {
                         <div className="rounded-lg border bg-card p-4">
                             <div className="flex items-center gap-2">
                                 <HardDrive className="h-5 w-5 text-primary" />
-                                <span className="text-sm text-muted-foreground">Total Files</span>
+                                <span className="text-sm text-muted-foreground">{t("permissions.stats.totalFiles")}</span>
                             </div>
                             <p className="text-2xl font-bold mt-2">
-                                {stats.totalFiles.toLocaleString()}
+                                {format.number(stats.totalFiles)}
                             </p>
                         </div>
                         <div className="rounded-lg border bg-card p-4">
                             <div className="flex items-center gap-2">
                                 <FolderTree className="h-5 w-5 text-blue-500" />
-                                <span className="text-sm text-muted-foreground">Folders</span>
+                                <span className="text-sm text-muted-foreground">{t("permissions.stats.folders")}</span>
                             </div>
                             <p className="text-2xl font-bold mt-2">
-                                {stats.folders.toLocaleString()}
+                                {format.number(stats.folders)}
                             </p>
                         </div>
                         <div className="rounded-lg border bg-card p-4">
                             <div className="flex items-center gap-2">
                                 <FileText className="h-5 w-5 text-green-500" />
-                                <span className="text-sm text-muted-foreground">Shared Files</span>
+                                <span className="text-sm text-muted-foreground">{t("permissions.stats.sharedFiles")}</span>
                             </div>
                             <p className="text-2xl font-bold mt-2">
-                                {stats.sharedFiles.toLocaleString()}
+                                {format.number(stats.sharedFiles)}
                             </p>
                         </div>
                         <div className="rounded-lg border bg-card p-4">
                             <div className="flex items-center gap-2">
                                 <Users className="h-5 w-5 text-purple-500" />
-                                <span className="text-sm text-muted-foreground">Unique Users</span>
+                                <span className="text-sm text-muted-foreground">{t("permissions.stats.privateFiles")}</span>
                             </div>
                             <p className="text-2xl font-bold mt-2">
-                                {stats.uniqueUsers.toLocaleString()}
+                                {format.number(stats.uniqueUsers)}
                             </p>
                         </div>
                     </div>
@@ -301,15 +307,15 @@ export default function PermissionsPage() {
                                     disabled={isLoading}
                                 >
                                     <RefreshCw className={`mr-2 h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-                                    Refresh
+                                    {t("common.refresh")}
                                 </Button>
                                 {isLoading && (
                                     <div className="flex items-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin text-primary" />
                                         <div>
-                                            <p className="text-sm font-medium">Mapping Your Drive</p>
+                                            <p className="text-sm font-medium">{t("permissions.loading.title")}</p>
                                             <p className="text-xs text-muted-foreground">
-                                                {progress.current.toLocaleString()} files mapped
+                                                {t("permissions.loading.filesMapped", { count: progress.current })}
                                             </p>
                                         </div>
                                     </div>
@@ -320,11 +326,11 @@ export default function PermissionsPage() {
                                 <>
                                     <Button onClick={handleBulkAdd} variant="outline">
                                         <UserPlus className="mr-2 h-4 w-4" />
-                                        Bulk Add Permission
+                                        {t("permissions.actions.bulkAdd")}
                                     </Button>
                                     <Button onClick={handleBulkRemove} variant="outline">
                                         <UserMinus className="mr-2 h-4 w-4" />
-                                        Bulk Remove Permission
+                                        {t("permissions.actions.bulkRemove")}
                                     </Button>
                                 </>
                             )}
@@ -374,7 +380,7 @@ export default function PermissionsPage() {
                 <ErrorDialog
                     open={errorDialogOpen}
                     onOpenChange={setErrorDialogOpen}
-                    error={error || "Unknown error occurred"}
+                    error={error || t("permissions.errors.unknown")}
                     onRetry={refreshFiles}
                 />
             </div>

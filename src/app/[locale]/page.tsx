@@ -3,6 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
     Shield,
@@ -16,55 +17,13 @@ import {
     AlertTriangle,
 } from "lucide-react";
 
-const features = [
-    {
-        icon: FolderTree,
-        title: "Complete File Mapping",
-        description:
-            "Automatically scan and map your entire Google Drive structure for easy permission management.",
-    },
-    {
-        icon: Users,
-        title: "User-Based Permissions",
-        description:
-            "Add or remove access for specific users across multiple files and folders at once.",
-    },
-    {
-        icon: Search,
-        title: "Advanced Search & Filter",
-        description:
-            "Find files quickly with powerful search, sort, and filter capabilities.",
-    },
-    {
-        icon: Shield,
-        title: "Bulk Actions",
-        description:
-            "Manage permissions in bulk - grant or revoke access to hundreds of files simultaneously.",
-    },
-    {
-        icon: Lock,
-        title: "Privacy First",
-        description:
-            "Your data stays on your device. We use local storage for offline-first functionality.",
-    },
-    {
-        icon: Zap,
-        title: "Real-time Updates",
-        description:
-            "Changes are reflected instantly in your Google Drive with minimal API calls.",
-    },
-];
-
-const benefits = [
-    "View all files and their permissions in one place",
-    "Remove permissions for former team members quickly",
-    "Grant access to new collaborators across multiple folders",
-    "Identify files with unexpected sharing settings",
-];
+const featureIcons = [FolderTree, Users, Search, Shield, Lock, Zap];
 
 export default function HomePage() {
     const { data: session, status } = useSession();
     const router = useRouter();
+    const locale = useLocale();
+    const t = useTranslations();
     const [isConfigured, setIsConfigured] = useState<boolean | null>(null);
 
     useEffect(() => {
@@ -92,15 +51,14 @@ export default function HomePage() {
                         <div className="flex items-start gap-4">
                             <AlertTriangle className="h-6 w-6 text-yellow-500 shrink-0 mt-0.5" />
                             <div>
-                                <h2 className="text-xl font-semibold mb-2">Setup Required</h2>
+                                <h2 className="text-xl font-semibold mb-2">{t("home.setup.heading")}</h2>
                                 <p className="text-muted-foreground mb-4">
-                                    To use this app, you need to configure Google OAuth credentials.
+                                    {t("home.setup.description")}
                                 </p>
                                 <div className="space-y-3 text-sm">
-                                    <p className="font-medium">Follow these steps:</p>
+                                    <p className="font-medium">{t("home.setup.followSteps")}</p>
                                     <ol className="list-decimal list-inside space-y-2 text-muted-foreground">
                                         <li>
-                                            Go to{" "}
                                             <a
                                                 href="https://console.cloud.google.com/apis/credentials"
                                                 target="_blank"
@@ -110,26 +68,23 @@ export default function HomePage() {
                                                 Google Cloud Console
                                             </a>
                                         </li>
-                                        <li>Create a new project or select an existing one</li>
-                                        <li>Enable the <strong>Google Drive API</strong></li>
-                                        <li>Go to <strong>APIs & Services → Credentials</strong></li>
-                                        <li>Create an <strong>OAuth 2.0 Client ID</strong> (Web application)</li>
+                                        <li>{t("home.setup.step2")}</li>
+                                        <li>{t("home.setup.step3")}</li>
+                                        <li>{t("home.setup.step4")}</li>
+                                        <li>{t("home.setup.step5")}</li>
                                         <li>
-                                            Add <code className="bg-muted px-1 rounded">http://localhost:3000/api/auth/callback/google</code> as an authorized redirect URI
+                                            <code className="bg-muted px-1 rounded">http://localhost:3000/api/auth/callback/google</code>
                                         </li>
-                                        <li>Copy the <strong>Client ID</strong> and <strong>Client Secret</strong></li>
+                                        <li>{t("home.setup.step7")}</li>
                                     </ol>
                                     <p className="font-medium mt-4">
-                                        Then update your <code className="bg-muted px-1 rounded">.env.local</code> file:
+                                        {t("home.setup.envNote")}
                                     </p>
                                     <pre className="bg-muted p-3 rounded-md overflow-x-auto text-xs">
                                         {`GOOGLE_CLIENT_ID=your_client_id_here
 GOOGLE_CLIENT_SECRET=your_client_secret_here
 AUTH_SECRET=run_openssl_rand_base64_32`}
                                     </pre>
-                                    <p className="text-muted-foreground mt-4">
-                                        After updating the environment variables, restart the development server.
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -139,6 +94,47 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
         );
     }
 
+    const features = [
+        {
+            icon: FolderTree,
+            titleKey: "home.features.completeMapping.title",
+            descKey: "home.features.completeMapping.description",
+        },
+        {
+            icon: Users,
+            titleKey: "home.features.permissionControl.title",
+            descKey: "home.features.permissionControl.description",
+        },
+        {
+            icon: Search,
+            titleKey: "home.features.searchFilter.title",
+            descKey: "home.features.searchFilter.description",
+        },
+        {
+            icon: Shield,
+            titleKey: "home.features.bulkActions.title",
+            descKey: "home.features.bulkActions.description",
+        },
+        {
+            icon: Lock,
+            titleKey: "home.features.privacy.title",
+            descKey: "home.features.privacy.description",
+        },
+        {
+            icon: Zap,
+            titleKey: "home.features.realtime.title",
+            descKey: "home.features.realtime.description",
+        },
+    ];
+
+    const benefitKeys = [
+        "home.benefits.items.visualize",
+        "home.benefits.items.identify",
+        "home.benefits.items.removeAccess",
+        "home.benefits.items.audit",
+        "home.benefits.items.bulkModify",
+    ];
+
     return (
         <div className="flex flex-col">
             {/* Hero Section */}
@@ -146,13 +142,12 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                 <div className="container mx-auto px-4">
                     <div className="mx-auto max-w-4xl text-center">
                         <h1 className="mb-6 text-4xl font-extrabold tracking-tight md:text-6xl lg:text-7xl">
-                            Take Control of Your{" "}
-                            <span className="text-primary">Google Drive</span> Permissions
+                            {t("home.hero.title1")}{" "}
+                            <span className="text-primary">{t("home.hero.title2")}</span>{" "}
+                            {t("home.hero.title3")}
                         </h1>
                         <p className="mb-8 text-lg text-muted-foreground md:text-xl">
-                            Visualize, manage, and audit file permissions across your entire
-                            Google Drive. Stop manually checking permissions on individual
-                            files—see everything in one powerful dashboard.
+                            {t("home.hero.description")}
                         </p>
                         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
                             <Button
@@ -160,13 +155,13 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                                 className="gap-2 text-lg"
                                 onClick={() => {
                                     if (status === "authenticated") {
-                                        router.push("/permissions");
+                                        router.push(`/${locale}/permissions`);
                                     } else {
-                                        signIn("google", { callbackUrl: "/permissions" });
+                                        signIn("google", { callbackUrl: `/${locale}/permissions` });
                                     }
                                 }}
                             >
-                                {status === "authenticated" ? "Go to Dashboard" : "Connect Google Drive"}
+                                {status === "authenticated" ? t("home.hero.goToDashboard") : t("home.hero.connectDrive")}
                                 <ArrowRight className="h-5 w-5" />
                             </Button>
                             <Button
@@ -180,11 +175,11 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                                     });
                                 }}
                             >
-                                Learn More
+                                {t("home.hero.learnMore")}
                             </Button>
                         </div>
                         <p className="mt-4 text-sm text-muted-foreground">
-                            Free to use • No credit card required • Privacy-focused
+                            {t("home.hero.tagline")}
                         </p>
                     </div>
                 </div>
@@ -197,24 +192,20 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                 <div className="container mx-auto px-4">
                     <div className="mx-auto max-w-2xl text-center">
                         <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                            Everything You Need to Manage Permissions
+                            {t("home.features.heading")}
                         </h2>
-                        <p className="text-lg text-muted-foreground">
-                            Powerful features designed to make permission management simple
-                            and efficient.
-                        </p>
                     </div>
                     <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                         {features.map((feature) => (
                             <div
-                                key={feature.title}
+                                key={feature.titleKey}
                                 className="group rounded-xl border bg-card p-6 transition-all hover:border-primary/50 hover:shadow-lg"
                             >
                                 <div className="mb-4 inline-flex rounded-lg bg-primary/10 p-3 text-primary">
                                     <feature.icon className="h-6 w-6" />
                                 </div>
-                                <h3 className="mb-2 text-xl font-semibold">{feature.title}</h3>
-                                <p className="text-muted-foreground">{feature.description}</p>
+                                <h3 className="mb-2 text-xl font-semibold">{t(feature.titleKey)}</h3>
+                                <p className="text-muted-foreground">{t(feature.descKey)}</p>
                             </div>
                         ))}
                     </div>
@@ -227,17 +218,13 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                     <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
                         <div>
                             <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                                Why Use Drive Permissions Manager?
+                                {t("home.benefits.heading")}
                             </h2>
-                            <p className="mb-8 text-lg text-muted-foreground">
-                                Managing permissions in Google Drive can be tedious. Our tool
-                                streamlines the process so you can focus on what matters most.
-                            </p>
-                            <ul className="space-y-4">
-                                {benefits.map((benefit) => (
-                                    <li key={benefit} className="flex items-start gap-3">
+                            <ul className="space-y-4 mt-8">
+                                {benefitKeys.map((key) => (
+                                    <li key={key} className="flex items-start gap-3">
                                         <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
-                                        <span>{benefit}</span>
+                                        <span>{t(key)}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -247,7 +234,7 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                                 <div className="relative h-full w-full">
                                     <img
                                         src="/screenshot.jpg"
-                                        alt="Drive Permissions Manager Dashboard"
+                                        alt={t("home.screenshot.alt")}
                                         className="h-full w-full object-cover"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
@@ -263,12 +250,10 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                 <div className="container mx-auto px-4">
                     <div className="mx-auto max-w-3xl rounded-2xl bg-primary p-8 text-center text-primary-foreground md:p-12">
                         <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-                            Ready to Take Control?
+                            {t("home.cta.heading")}
                         </h2>
                         <p className="mb-8 text-lg opacity-90">
-                            Connect your Google Drive and start managing permissions in
-                            seconds. It&apos;s free and takes less than a minute to get
-                            started.
+                            {t("home.cta.description")}
                         </p>
                         <Button
                             size="lg"
@@ -276,13 +261,13 @@ AUTH_SECRET=run_openssl_rand_base64_32`}
                             className="gap-2 text-lg"
                             onClick={() => {
                                 if (status === "authenticated") {
-                                    router.push("/permissions");
+                                    router.push(`/${locale}/permissions`);
                                 } else {
-                                    signIn("google", { callbackUrl: "/permissions" });
+                                    signIn("google", { callbackUrl: `/${locale}/permissions` });
                                 }
                             }}
                         >
-                            {status === "authenticated" ? "Go to Dashboard" : "Get Started Now"}
+                            {status === "authenticated" ? t("home.hero.goToDashboard") : t("home.cta.button")}
                             <ArrowRight className="h-5 w-5" />
                         </Button>
                     </div>

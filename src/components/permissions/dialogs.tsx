@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { MappedFile, DrivePermission } from "@/lib/types";
-import { ROLE_LABELS, ROLE_COLORS } from "@/lib/constants";
 import {
     Dialog,
     DialogContent,
@@ -21,7 +21,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
 import {
     Folder,
     FileText,
@@ -33,6 +32,16 @@ import {
     Trash2,
     Loader2,
 } from "lucide-react";
+
+// Role colors for badges
+const ROLE_COLORS: Record<string, string> = {
+    owner: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+    organizer: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+    fileOrganizer: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900 dark:text-cyan-200",
+    writer: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+    commenter: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+    reader: "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200",
+};
 
 interface AddPermissionDialogProps {
     open: boolean;
@@ -54,6 +63,7 @@ export function AddPermissionDialog({
     onSubmit,
     isLoading,
 }: AddPermissionDialogProps) {
+    const t = useTranslations();
     const [type, setType] = useState<string>("user");
     const [role, setRole] = useState<string>("reader");
     const [emailAddress, setEmailAddress] = useState("");
@@ -88,7 +98,7 @@ export function AddPermissionDialog({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <UserPlus className="h-5 w-5" />
-                        Add Permission
+                        {t("dialogs.addPermission.title")}
                     </DialogTitle>
                     <DialogDescription>
                         {file && (
@@ -105,7 +115,7 @@ export function AddPermissionDialog({
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="type">Permission Type</Label>
+                        <Label htmlFor="type">{t("dialogs.addPermission.permissionType")}</Label>
                         <Select value={type} onValueChange={setType}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select type" />
@@ -114,25 +124,25 @@ export function AddPermissionDialog({
                                 <SelectItem value="user">
                                     <span className="flex items-center gap-2">
                                         <Mail className="h-4 w-4" />
-                                        User
+                                        {t("permissionTypes.user")}
                                     </span>
                                 </SelectItem>
                                 <SelectItem value="group">
                                     <span className="flex items-center gap-2">
                                         <Users className="h-4 w-4" />
-                                        Group
+                                        {t("permissionTypes.group")}
                                     </span>
                                 </SelectItem>
                                 <SelectItem value="domain">
                                     <span className="flex items-center gap-2">
                                         <Globe className="h-4 w-4" />
-                                        Domain
+                                        {t("permissionTypes.domain")}
                                     </span>
                                 </SelectItem>
                                 <SelectItem value="anyone">
                                     <span className="flex items-center gap-2">
                                         <Globe className="h-4 w-4" />
-                                        Anyone with link
+                                        {t("permissionTypes.anyone")}
                                     </span>
                                 </SelectItem>
                             </SelectContent>
@@ -141,11 +151,11 @@ export function AddPermissionDialog({
 
                     {(type === "user" || type === "group") && (
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email Address</Label>
+                            <Label htmlFor="email">{t("dialogs.addPermission.emailAddress")}</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="user@example.com"
+                                placeholder={t("dialogs.addPermission.emailPlaceholder")}
                                 value={emailAddress}
                                 onChange={(e) => setEmailAddress(e.target.value)}
                             />
@@ -154,10 +164,10 @@ export function AddPermissionDialog({
 
                     {type === "domain" && (
                         <div className="grid gap-2">
-                            <Label htmlFor="domain">Domain</Label>
+                            <Label htmlFor="domain">{t("dialogs.addPermission.domain")}</Label>
                             <Input
                                 id="domain"
-                                placeholder="example.com"
+                                placeholder={t("dialogs.addPermission.domainPlaceholder")}
                                 value={domain}
                                 onChange={(e) => setDomain(e.target.value)}
                             />
@@ -165,26 +175,26 @@ export function AddPermissionDialog({
                     )}
 
                     <div className="grid gap-2">
-                        <Label htmlFor="role">Role</Label>
+                        <Label htmlFor="role">{t("dialogs.addPermission.role")}</Label>
                         <Select value={role} onValueChange={setRole}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select role" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="reader">Viewer</SelectItem>
-                                <SelectItem value="commenter">Commenter</SelectItem>
-                                <SelectItem value="writer">Editor</SelectItem>
+                                <SelectItem value="reader">{t("roles.reader")}</SelectItem>
+                                <SelectItem value="commenter">{t("roles.commenter")}</SelectItem>
+                                <SelectItem value="writer">{t("roles.writer")}</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
                 </div>
                 <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                     <Button onClick={handleSubmit} disabled={isLoading}>
                         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        Add Permission
+                        {t("dialogs.addPermission.submit")}
                     </Button>
                 </div>
             </DialogContent>
@@ -207,6 +217,7 @@ export function RemovePermissionDialog({
     onRemove,
     isLoading,
 }: RemovePermissionDialogProps) {
+    const t = useTranslations();
     const [removingId, setRemovingId] = useState<string | null>(null);
 
     const handleRemove = async (permissionId: string) => {
@@ -218,13 +229,18 @@ export function RemovePermissionDialog({
     const permissions = file?.permissions || [];
     const removablePermissions = permissions.filter((p) => p.role !== "owner");
 
+    const getRoleLabel = (role: string) => {
+        const roleKey = role as keyof typeof ROLE_COLORS;
+        return t(`roles.${roleKey}`) || role;
+    };
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <UserMinus className="h-5 w-5" />
-                        Remove Permission
+                        {t("dialogs.removePermission.title")}
                     </DialogTitle>
                     <DialogDescription>
                         {file && (
@@ -242,7 +258,7 @@ export function RemovePermissionDialog({
                 <div className="py-4">
                     {removablePermissions.length === 0 ? (
                         <p className="text-center text-muted-foreground py-4">
-                            No removable permissions. You cannot remove the owner.
+                            {t("dialogs.removePermission.noPermissions")}
                         </p>
                     ) : (
                         <div className="space-y-2">
@@ -257,7 +273,7 @@ export function RemovePermissionDialog({
                                                 {permission.displayName ||
                                                     permission.emailAddress ||
                                                     permission.domain ||
-                                                    "Anyone"}
+                                                    t("permissionTypes.anyone")}
                                             </span>
                                             <span className="text-sm text-muted-foreground">
                                                 {permission.emailAddress || permission.domain || permission.type}
@@ -267,7 +283,7 @@ export function RemovePermissionDialog({
                                             variant="secondary"
                                             className={ROLE_COLORS[permission.role] || ""}
                                         >
-                                            {ROLE_LABELS[permission.role] || permission.role}
+                                            {getRoleLabel(permission.role)}
                                         </Badge>
                                     </div>
                                     <Button
@@ -303,7 +319,13 @@ export function ViewPermissionsDialog({
     onOpenChange,
     file,
 }: ViewPermissionsDialogProps) {
+    const t = useTranslations();
     const permissions = file?.permissions || [];
+
+    const getRoleLabel = (role: string) => {
+        const roleKey = role as keyof typeof ROLE_COLORS;
+        return t(`roles.${roleKey}`) || role;
+    };
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
@@ -311,7 +333,7 @@ export function ViewPermissionsDialog({
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <Users className="h-5 w-5" />
-                        Permissions
+                        {t("dialogs.viewPermissions.title")}
                     </DialogTitle>
                     <DialogDescription>
                         {file && (
@@ -329,7 +351,7 @@ export function ViewPermissionsDialog({
                 <div className="py-4">
                     {permissions.length === 0 ? (
                         <p className="text-center text-muted-foreground py-4">
-                            No permissions found.
+                            {t("dialogs.viewPermissions.noPermissions")}
                         </p>
                     ) : (
                         <div className="space-y-2 max-h-[400px] overflow-y-auto">
@@ -343,7 +365,7 @@ export function ViewPermissionsDialog({
                                             {permission.displayName ||
                                                 permission.emailAddress ||
                                                 permission.domain ||
-                                                (permission.type === "anyone" ? "Anyone with link" : "Unknown")}
+                                                (permission.type === "anyone" ? t("permissionTypes.anyone") : "Unknown")}
                                         </span>
                                         <span className="text-sm text-muted-foreground">
                                             {permission.emailAddress || permission.domain || permission.type}
@@ -353,7 +375,7 @@ export function ViewPermissionsDialog({
                                         variant="secondary"
                                         className={ROLE_COLORS[permission.role] || ""}
                                     >
-                                        {ROLE_LABELS[permission.role] || permission.role}
+                                        {getRoleLabel(permission.role)}
                                     </Badge>
                                 </div>
                             ))}
@@ -388,6 +410,7 @@ export function BulkActionDialog({
     onSubmit,
     isLoading,
 }: BulkActionDialogProps) {
+    const t = useTranslations();
     const [type, setType] = useState<string>("user");
     const [role, setRole] = useState<string>("reader");
     const [emailAddress, setEmailAddress] = useState("");
@@ -433,25 +456,27 @@ export function BulkActionDialog({
                         ) : (
                             <UserMinus className="h-5 w-5" />
                         )}
-                        {action === "add" ? "Bulk Add Permission" : "Bulk Remove Permission"}
+                        {action === "add" ? t("dialogs.addPermission.bulkTitle") : t("dialogs.removePermission.bulkTitle")}
                     </DialogTitle>
                     <DialogDescription>
-                        This will {action} permissions for {selectedCount} selected file(s).
+                        {action === "add"
+                            ? t("dialogs.addPermission.bulkDescription", { count: selectedCount })
+                            : t("dialogs.removePermission.bulkDescription", { count: selectedCount })}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     {action === "add" && (
                         <div className="grid gap-2">
-                            <Label htmlFor="type">Permission Type</Label>
+                            <Label htmlFor="type">{t("dialogs.addPermission.permissionType")}</Label>
                             <Select value={type} onValueChange={setType}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select type" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="user">User</SelectItem>
-                                    <SelectItem value="group">Group</SelectItem>
-                                    <SelectItem value="domain">Domain</SelectItem>
-                                    <SelectItem value="anyone">Anyone with link</SelectItem>
+                                    <SelectItem value="user">{t("permissionTypes.user")}</SelectItem>
+                                    <SelectItem value="group">{t("permissionTypes.group")}</SelectItem>
+                                    <SelectItem value="domain">{t("permissionTypes.domain")}</SelectItem>
+                                    <SelectItem value="anyone">{t("permissionTypes.anyone")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -459,11 +484,11 @@ export function BulkActionDialog({
 
                     {(action === "remove" || type === "user" || type === "group") && (
                         <div className="grid gap-2">
-                            <Label htmlFor="email">Email Address</Label>
+                            <Label htmlFor="email">{t("dialogs.addPermission.emailAddress")}</Label>
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="user@example.com"
+                                placeholder={t("dialogs.addPermission.emailPlaceholder")}
                                 value={emailAddress}
                                 onChange={(e) => setEmailAddress(e.target.value)}
                             />
@@ -472,10 +497,10 @@ export function BulkActionDialog({
 
                     {action === "add" && type === "domain" && (
                         <div className="grid gap-2">
-                            <Label htmlFor="domain">Domain</Label>
+                            <Label htmlFor="domain">{t("dialogs.addPermission.domain")}</Label>
                             <Input
                                 id="domain"
-                                placeholder="example.com"
+                                placeholder={t("dialogs.addPermission.domainPlaceholder")}
                                 value={domain}
                                 onChange={(e) => setDomain(e.target.value)}
                             />
@@ -484,15 +509,15 @@ export function BulkActionDialog({
 
                     {action === "add" && (
                         <div className="grid gap-2">
-                            <Label htmlFor="role">Role</Label>
+                            <Label htmlFor="role">{t("dialogs.addPermission.role")}</Label>
                             <Select value={role} onValueChange={setRole}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Select role" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem value="reader">Viewer</SelectItem>
-                                    <SelectItem value="commenter">Commenter</SelectItem>
-                                    <SelectItem value="writer">Editor</SelectItem>
+                                    <SelectItem value="reader">{t("roles.reader")}</SelectItem>
+                                    <SelectItem value="commenter">{t("roles.commenter")}</SelectItem>
+                                    <SelectItem value="writer">{t("roles.writer")}</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -500,7 +525,7 @@ export function BulkActionDialog({
                 </div>
                 <div className="flex justify-end gap-2">
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                     <Button
                         onClick={handleSubmit}
@@ -508,7 +533,7 @@ export function BulkActionDialog({
                         variant={action === "remove" ? "destructive" : "default"}
                     >
                         {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {action === "add" ? "Add to Selected" : "Remove from Selected"}
+                        {action === "add" ? t("dialogs.addPermission.bulkSubmit") : t("dialogs.removePermission.bulkSubmit")}
                     </Button>
                 </div>
             </DialogContent>

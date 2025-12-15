@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -19,22 +20,25 @@ interface ErrorDialogProps {
 }
 
 export function ErrorDialog({ open, onOpenChange, error, onRetry }: ErrorDialogProps) {
+    const t = useTranslations("errorDialog");
+    const tCommon = useTranslations("common");
+
     return (
         <AlertDialog open={open} onOpenChange={onOpenChange}>
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <div className="flex items-center gap-2">
                         <AlertTriangle className="h-5 w-5 text-destructive" />
-                        <AlertDialogTitle>Mapping Failed</AlertDialogTitle>
+                        <AlertDialogTitle>{t("title")}</AlertDialogTitle>
                     </div>
                     <AlertDialogDescription className="pt-2">
                         <div className="space-y-2">
-                            <p>We encountered an error while mapping your Google Drive files:</p>
+                            <p>{t("description")}</p>
                             <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
                                 {error}
                             </div>
                             <p className="text-xs text-muted-foreground">
-                                This could be due to network issues, authentication problems, or API rate limits.
+                                {t("details")}
                             </p>
                         </div>
                     </AlertDialogDescription>
@@ -44,7 +48,7 @@ export function ErrorDialog({ open, onOpenChange, error, onRetry }: ErrorDialogP
                         onOpenChange(false);
                         if (onRetry) onRetry();
                     }}>
-                        Try Again
+                        {tCommon("retry")}
                     </AlertDialogAction>
                 </AlertDialogFooter>
             </AlertDialogContent>

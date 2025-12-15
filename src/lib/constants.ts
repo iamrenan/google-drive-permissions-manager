@@ -3,7 +3,7 @@ export const DRIVE_API_BASE = "https://www.googleapis.com/drive/v3";
 export const FOLDER_MIME_TYPE = "application/vnd.google-apps.folder";
 
 // File mapping limits
-export const MAX_FILES_THRESHOLD = 5000; // Maximum files to map to prevent resource issues
+export const MAX_FILES_THRESHOLD = 20000; // Maximum files to map to prevent resource issues
 export const BATCH_SIZE = 100; // Number of files to fetch per API call
 
 // Permission role display

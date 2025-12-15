@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "next-intl";
 import { Check, PlusCircle } from "lucide-react";
 import { Column } from "@tanstack/react-table";
 
@@ -38,6 +39,7 @@ export function FacetedFilter<TData, TValue>({
     title,
     options,
 }: FacetedFilterProps<TData, TValue>) {
+    const t = useTranslations("dataTable.filters");
     const facets = column?.getFacetedUniqueValues();
     const selectedValues = new Set(column?.getFilterValue() as string[]);
 
@@ -62,7 +64,7 @@ export function FacetedFilter<TData, TValue>({
                                         variant="secondary"
                                         className="rounded-sm px-1 font-normal"
                                     >
-                                        {selectedValues.size} selected
+                                        {t("selected", { count: selectedValues.size })}
                                     </Badge>
                                 ) : (
                                     options
@@ -86,7 +88,7 @@ export function FacetedFilter<TData, TValue>({
                 <Command>
                     <CommandInput placeholder={title} />
                     <CommandList>
-                        <CommandEmpty>No results found.</CommandEmpty>
+                        <CommandEmpty>{t("noResults")}</CommandEmpty>
                         <CommandGroup>
                             {options.map((option) => {
                                 const isSelected = selectedValues.has(option.value);
@@ -136,7 +138,7 @@ export function FacetedFilter<TData, TValue>({
                                         onSelect={() => column?.setFilterValue(undefined)}
                                         className="justify-center text-center"
                                     >
-                                        Clear filters
+                                        {t("clearFilters")}
                                     </CommandItem>
                                 </CommandGroup>
                             </>

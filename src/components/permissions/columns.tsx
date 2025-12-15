@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MappedFile } from "@/lib/types";
-import { ROLE_LABELS, ROLE_COLORS } from "@/lib/constants";
+import { ROLE_COLORS } from "@/lib/constants";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -32,18 +32,20 @@ import {
     ChevronDown,
     ChevronRight,
 } from "lucide-react";
-import { formatDate, formatBytes } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 
 interface ColumnsProps {
     onAddPermission: (file: MappedFile) => void;
     onRemovePermission: (file: MappedFile) => void;
     onViewPermissions: (file: MappedFile) => void;
+    t: (key: string, values?: Record<string, string | number | Date>) => string;
 }
 
 export function getColumns({
     onAddPermission,
     onRemovePermission,
     onViewPermissions,
+    t,
 }: ColumnsProps): ColumnDef<MappedFile>[] {
     return [
         {
@@ -55,14 +57,14 @@ export function getColumns({
                         (table.getIsSomePageRowsSelected() && "indeterminate")
                     }
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                    aria-label="Select all"
+                    aria-label={t("columns.selectAll")}
                 />
             ),
             cell: ({ row }) => (
                 <Checkbox
                     checked={row.getIsSelected()}
                     onCheckedChange={(value) => row.toggleSelected(!!value)}
-                    aria-label="Select row"
+                    aria-label={t("columns.selectRow")}
                 />
             ),
             enableSorting: false,
@@ -76,7 +78,7 @@ export function getColumns({
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Name
+                        {t("columns.name")}
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -86,13 +88,14 @@ export function getColumns({
                 const canExpand = row.getCanExpand();
                 const isExpanded = row.getIsExpanded();
                 const depth = row.depth;
-                
+
                 return (
                     <div className="flex items-center gap-2" style={{ paddingLeft: `${depth * 1.5}rem` }}>
                         {canExpand ? (
                             <button
                                 onClick={row.getToggleExpandedHandler()}
                                 className="p-0 hover:bg-muted rounded"
+                                aria-label={isExpanded ? t("columns.collapse") : t("columns.expand")}
                             >
                                 {isExpanded ? (
                                     <ChevronDown className="h-4 w-4" />
@@ -128,7 +131,7 @@ export function getColumns({
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Type
+                        {t("columns.type")}
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -136,7 +139,7 @@ export function getColumns({
             cell: ({ row }) => {
                 return (
                     <Badge variant="outline">
-                        {row.original.isFolder ? "Folder" : "File"}
+                        {row.original.isFolder ? t("columns.folder") : t("columns.file")}
                     </Badge>
                 );
             },
@@ -161,7 +164,7 @@ export function getColumns({
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Permissioned Users
+                        {t("columns.permissionedUsers")}
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -175,7 +178,7 @@ export function getColumns({
                 return (
                     <div className="flex flex-wrap items-center gap-1">
                         {permissions.length === 0 ? (
-                            <span className="text-muted-foreground text-sm">No shared access</span>
+                            <span className="text-muted-foreground text-sm">{t("columns.noSharedAccess")}</span>
                         ) : (
                             <>
                                 {displayPermissions.map((perm, index) => (
@@ -186,21 +189,21 @@ export function getColumns({
                                                 className={`text-xs ${ROLE_COLORS[perm.role] || ""}`}
                                             >
                                                 {perm.type === "anyone"
-                                                    ? "Anyone"
-                                                    : perm.displayName || perm.emailAddress || perm.domain || "Unknown"}
+                                                    ? t("columns.anyone")
+                                                    : perm.displayName || perm.emailAddress || perm.domain || t("columns.unknown")}
                                             </Badge>
                                         </TooltipTrigger>
                                         <TooltipContent>
                                             <p>
                                                 {perm.emailAddress || perm.domain || perm.type}:{" "}
-                                                {ROLE_LABELS[perm.role] || perm.role}
+                                                {t(`roles.${perm.role}`)}
                                             </p>
                                         </TooltipContent>
                                     </Tooltip>
                                 ))}
                                 {remainingCount > 0 && (
                                     <Badge variant="outline" className="text-xs">
-                                        +{remainingCount} more
+                                        {t("columns.more", { count: remainingCount })}
                                     </Badge>
                                 )}
                             </>
@@ -221,15 +224,15 @@ export function getColumns({
         },
         {
             accessorKey: "shared",
-            header: "Shared",
+            header: t("columns.shared"),
             cell: ({ row }) => {
                 return row.original.shared ? (
                     <Badge variant="default" className="bg-green-500">
                         <Users className="mr-1 h-3 w-3" />
-                        Shared
+                        {t("columns.sharedBadge")}
                     </Badge>
                 ) : (
-                    <Badge variant="secondary">Private</Badge>
+                    <Badge variant="secondary">{t("columns.privateBadge")}</Badge>
                 );
             },
             filterFn: (row, id, value) => {
@@ -247,7 +250,7 @@ export function getColumns({
                         variant="ghost"
                         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                     >
-                        Modified
+                        {t("columns.modified")}
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
                 );
@@ -265,7 +268,7 @@ export function getColumns({
         },
         {
             id: "actions",
-            header: "Actions",
+            header: t("columns.actions"),
             cell: ({ row }) => {
                 const file = row.original;
 
@@ -273,27 +276,27 @@ export function getColumns({
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
+                                <span className="sr-only">{t("columns.openMenu")}</span>
                                 <MoreHorizontal className="h-4 w-4" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>{t("columns.actionsLabel")}</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => onViewPermissions(file)}>
                                 <Eye className="mr-2 h-4 w-4" />
-                                View Permissions
+                                {t("columns.viewPermissions")}
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => onAddPermission(file)}>
                                 <UserPlus className="mr-2 h-4 w-4" />
-                                Add Permission
+                                {t("columns.addPermission")}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => onRemovePermission(file)}
                                 className="text-destructive focus:text-destructive"
                             >
                                 <UserMinus className="mr-2 h-4 w-4" />
-                                Remove Permission
+                                {t("columns.removePermission")}
                             </DropdownMenuItem>
                             {file.webViewLink && (
                                 <>
@@ -305,7 +308,7 @@ export function getColumns({
                                             rel="noopener noreferrer"
                                         >
                                             <ExternalLink className="mr-2 h-4 w-4" />
-                                            Open in Drive
+                                            {t("columns.openInDrive")}
                                         </a>
                                     </DropdownMenuItem>
                                 </>

@@ -1,0 +1,295 @@
+{
+    "metadata": {
+        "title": "Google Drive Permissions Manager",
+        "description": "Manage and control permissions for your Google Drive files and folders with ease."
+    },
+    "common": {
+        "brand": "Drive Permissions Manager",
+        "signIn": "Sign in with Google",
+        "signOut": "Log out",
+        "cancel": "Cancel",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "confirm": "Confirm",
+        "close": "Close",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "add": "Add",
+        "remove": "Remove",
+        "search": "Search",
+        "filter": "Filter",
+        "clear": "Clear",
+        "refresh": "Refresh",
+        "retry": "Try Again",
+        "home": "Home",
+        "myDrive": "My Drive",
+        "openMenu": "Open menu"
+    },
+    "roles": {
+        "owner": "Owner",
+        "organizer": "Organizer",
+        "fileOrganizer": "File Organizer",
+        "writer": "Editor",
+        "commenter": "Commenter",
+        "reader": "Viewer"
+    },
+    "permissionTypes": {
+        "user": "User",
+        "group": "Group",
+        "domain": "Domain",
+        "anyone": "Anyone"
+    },
+    "fileTypes": {
+        "folder": "Folder",
+        "file": "File"
+    },
+    "home": {
+        "hero": {
+            "title1": "Take Control of Your",
+            "title2": "Google Drive",
+            "title3": "Permissions",
+            "description": "Visualize, manage, and audit file permissions across your entire Google Drive. Keep your data secure and organized with our powerful permission management tool.",
+            "goToDashboard": "Go to Dashboard",
+            "connectDrive": "Connect Google Drive",
+            "learnMore": "Learn More",
+            "tagline": "Free to use • No credit card required • Privacy-focused"
+        },
+        "screenshot": {
+            "alt": "Drive Permissions Manager Dashboard"
+        },
+        "features": {
+            "heading": "Everything You Need to Manage Permissions",
+            "completeMapping": {
+                "title": "Complete File Mapping",
+                "description": "Automatically scan and map your entire Google Drive structure, including all files, folders, and their associated permissions."
+            },
+            "permissionControl": {
+                "title": "Permission Control",
+                "description": "Add or remove access for specific users, groups, or domains. Set viewer, commenter, or editor roles with just a few clicks."
+            },
+            "searchFilter": {
+                "title": "Advanced Search & Filter",
+                "description": "Quickly find files by name, type, or permission status. Filter by shared files, private files, or specific permission levels."
+            },
+            "bulkActions": {
+                "title": "Bulk Actions",
+                "description": "Select multiple files and apply permission changes in bulk. Save time by managing permissions for entire folders at once."
+            },
+            "privacy": {
+                "title": "Privacy First",
+                "description": "Your data stays with you. We don't store your files - all operations happen through secure OAuth authentication with Google."
+            },
+            "realtime": {
+                "title": "Real-time Updates",
+                "description": "See permission changes instantly. Our system keeps track of all modifications and provides real-time feedback."
+            }
+        },
+        "benefits": {
+            "heading": "Why Use Drive Permissions Manager?",
+            "items": {
+                "visualize": "View all files and their permissions in one place",
+                "identify": "Identify who has access to sensitive documents",
+                "removeAccess": "Remove permissions for former team members quickly",
+                "audit": "Audit shared links and public files",
+                "bulkModify": "Bulk modify permissions across multiple files"
+            }
+        },
+        "setup": {
+            "heading": "Setup Required",
+            "description": "To use this app, you need to configure Google OAuth credentials.",
+            "followSteps": "Follow these steps:",
+            "step1": "1. Go to Google Cloud Console",
+            "step2": "2. Create a new project or select an existing one",
+            "step3": "3. Enable the Google Drive API",
+            "step4": "4. Configure the OAuth consent screen",
+            "step5": "5. Create OAuth 2.0 credentials (Web application)",
+            "step6": "6. Add http://localhost:3000 to authorized origins",
+            "step7": "7. Add http://localhost:3000/api/auth/callback/google to authorized redirect URIs",
+            "envNote": "Then create a .env.local file with your credentials. See the README for details."
+        },
+        "cta": {
+            "heading": "Ready to Take Control?",
+            "description": "Connect your Google Drive and start managing permissions in seconds. No installation required.",
+            "button": "Get Started Now"
+        }
+    },
+    "permissions": {
+        "pageTitle": "Permissions Manager",
+        "pageDescription": "Manage permissions for your Google Drive files and folders",
+        "stats": {
+            "totalFiles": "Total Files",
+            "folders": "Folders",
+            "sharedFiles": "Shared Files",
+            "privateFiles": "Private Files"
+        },
+        "loading": {
+            "title": "Mapping Your Drive",
+            "filesMapped": "{count} files mapped",
+            "initializing": "Initializing..."
+        },
+        "actions": {
+            "bulkAdd": "Bulk Add Permission",
+            "bulkRemove": "Bulk Remove Permission"
+        },
+        "errors": {
+            "failedToLoad": "Failed to load files from Google Drive",
+            "couldNotMap": "Could not map your Google Drive files",
+            "tryAgain": "Please try again or check your connection",
+            "unknown": "Unknown error occurred"
+        }
+    },
+    "dialogs": {
+        "addPermission": {
+            "title": "Add Permission",
+            "description": "Add a new permission to this file or folder.",
+            "bulkTitle": "Bulk Add Permission",
+            "bulkDescription": "This will add permissions for {count} selected file(s).",
+            "permissionType": "Permission Type",
+            "emailAddress": "Email Address",
+            "emailPlaceholder": "user@example.com",
+            "domain": "Domain",
+            "domainPlaceholder": "example.com",
+            "role": "Role",
+            "submit": "Add Permission",
+            "bulkSubmit": "Add to Selected"
+        },
+        "removePermission": {
+            "title": "Remove Permission",
+            "description": "Select a permission to remove from this file or folder.",
+            "bulkTitle": "Bulk Remove Permission",
+            "bulkDescription": "This will remove permissions for {count} selected file(s).",
+            "selectEmail": "Email Address",
+            "selectPlaceholder": "Select email to remove...",
+            "noPermissions": "No permissions found.",
+            "submit": "Remove Permission",
+            "bulkSubmit": "Remove from Selected"
+        },
+        "viewPermissions": {
+            "title": "Permissions",
+            "description": "View all permissions for this file or folder.",
+            "noPermissions": "No permissions found."
+        }
+    },
+    "dataTable": {
+        "roles": {
+            "owner": "Owner",
+            "organizer": "Organizer",
+            "fileOrganizer": "File Organizer",
+            "writer": "Editor",
+            "commenter": "Commenter",
+            "reader": "Viewer"
+        },
+        "columns": {
+            "name": "Name",
+            "type": "Type",
+            "permissionedUsers": "Permissioned Users",
+            "shared": "Shared",
+            "modified": "Modified",
+            "actions": "Actions",
+            "selectAll": "Select all",
+            "selectRow": "Select row",
+            "folder": "Folder",
+            "file": "File",
+            "noSharedAccess": "No shared access",
+            "anyone": "Anyone",
+            "unknown": "Unknown",
+            "more": "+{count} more",
+            "sharedBadge": "Shared",
+            "privateBadge": "Private",
+            "expand": "Expand",
+            "collapse": "Collapse",
+            "openMenu": "Open menu",
+            "actionsLabel": "Actions",
+            "viewPermissions": "View Permissions",
+            "addPermission": "Add Permission",
+            "removePermission": "Remove Permission",
+            "openInDrive": "Open in Drive"
+        },
+        "filters": {
+            "searchPlaceholder": "Search files...",
+            "allTypes": "All Types",
+            "folders": "Folders",
+            "files": "Files",
+            "allFiles": "All Files",
+            "shared": "Shared",
+            "private": "Private",
+            "type": "Type",
+            "sharing": "Sharing",
+            "users": "Users",
+            "clearFilters": "Clear filters",
+            "noResults": "No results found.",
+            "selected": "{count} selected"
+        },
+        "badges": {
+            "shared": "Shared",
+            "private": "Private",
+            "noAccess": "No shared access",
+            "moreUsers": "+{count} more"
+        },
+        "pagination": {
+            "showing": "Showing {start} to {end} of {total} entries",
+            "page": "Page {current} of {total}"
+        },
+        "selection": {
+            "filesSelected": "{selected} of {total} file(s) selected."
+        },
+        "empty": "No results.",
+        "actions": {
+            "viewPermissions": "View Permissions",
+            "addPermission": "Add Permission",
+            "removePermission": "Remove Permission",
+            "openInDrive": "Open in Drive"
+        },
+        "accessibility": {
+            "expandRow": "Expand row",
+            "collapseRow": "Collapse row"
+        }
+    },
+    "emptyState": {
+        "loading": {
+            "title": "Mapping Your Drive",
+            "description": "We're scanning your Google Drive and building a map of your files and folders. This might take a moment depending on how many files you have.",
+            "filesMapped": "{count} files mapped"
+        },
+        "noFiles": {
+            "title": "No Files Found",
+            "description": "Your Google Drive appears to be empty or we couldn't find any files. Try uploading some files to your Drive and refresh the page."
+        }
+    },
+    "errorDialog": {
+        "title": "Mapping Failed",
+        "description": "We couldn't map your Google Drive files.",
+        "details": "This could be due to network issues, authentication problems, or API rate limits."
+    },
+    "footer": {
+        "copyright": "© Renan A / Aireworks, {year}. All rights reserved.",
+        "github": "GitHub",
+        "linkedin": "LinkedIn"
+    },
+    "theme": {
+        "toggle": "Toggle theme",
+        "light": "Light",
+        "dark": "Dark",
+        "system": "System"
+    },
+    "language": {
+        "switch": "Change language",
+        "en-US": "English",
+        "pt-BR": "Português"
+    },
+    "errors": {
+        "unauthorized": "Unauthorized",
+        "invalidFileId": "Invalid file ID",
+        "invalidEmail": "Invalid email address",
+        "typeRequired": "Type and role are required",
+        "emailRequired": "Email address is required for user or group permissions",
+        "domainRequired": "Domain is required for domain permissions",
+        "fileIdsRequired": "File IDs are required",
+        "permissionNotFound": "Permission not found",
+        "failedToAdd": "Failed to add permission",
+        "failedToRemove": "Failed to remove permission",
+        "generic": "An error occurred"
+    }
+}
